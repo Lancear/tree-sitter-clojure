@@ -1,0 +1,33 @@
+{
+  "name": "tree-sitter-clojure",
+  "version": "1.0.0",
+  "description": "Clojure grammar for tree-sitter",
+  "main": "grammar.js",
+  "scripts": {
+    "start": "tree-sitter generate && tree-sitter parse ./examples/src/hello_world.clj",
+    "test": "tree-sitter test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dark-magic/tree-sitter-clojure.git"
+  },
+  "keywords": [
+    "tree-sitter",
+    "clojure",
+    "grammar",
+    "parser",
+    "speedtyper"
+  ],
+  "author": "dark-magic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dark-magic/tree-sitter-clojure/issues"
+  },
+  "homepage": "https://github.com/dark-magic/tree-sitter-clojure#readme",
+  "dependencies": {
+    "nan": "^2.14.2"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.18.0"
+  }
+}
