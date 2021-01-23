@@ -23,4 +23,6 @@
       \λ
       \tab
       5/4
-      " devs like clojure!")))
+      " devs like clojure and this is 100% "
+      true
+      "!")))

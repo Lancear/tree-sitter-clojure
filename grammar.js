@@ -8,6 +8,8 @@ module.exports = grammar({
   supertypes: $=> [
     $._expression, 
     $._collection, 
+    $._identifier,
+    $._symbol,
     $._literal, 
     $._numericLiteral,
     $._characterLiteral
@@ -17,8 +19,8 @@ module.exports = grammar({
     source_file: $=> repeat($.sExpression),
 
     // -- Expressions --- //
-    sExpression: $=> seq('(', field('op', $.identifier), field('operands', repeat($._expression)), ')'),
-    _expression: $=> choice($.sExpression, $._collection, $.identifier, $._literal),
+    sExpression: $=> seq('(', field('op', $._identifier), field('operands', repeat($._expression)), ')'),
+    _expression: $=> choice($.sExpression, $._collection, $._identifier, $._literal),
 
     // -- Collections --- //
     _collection: $=> choice($.list, $.vector, $.set, $.map),
@@ -30,8 +32,11 @@ module.exports = grammar({
     mapEntry: $=> seq($._expression, $._expression),
 
     // -- Symbols --- //
-    identifier: $=> /[:\-]?[a-zA-Z_][a-zA-Z0-9_?\-]*/,
-
+    _identifier: $=> choice($._symbol, $.keyword),
+    _symbol: $=> choice(prec(2, $.specialSymbol), prec(1, $.basicSymbol)),
+    specialSymbol: $=> /nil|true|false/,
+    basicSymbol: $=> /[^:#(){}\[\]\d"\\\s,;][^(){}\[\]\s,;]*/,
+    keyword: $=> /:[^(){}\[\]"\\\s,;]*/,
 
     // --- Literals --- //
     _literal: $=> choice($._numericLiteral, $._characterLiteral),
