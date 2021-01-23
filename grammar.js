@@ -4,19 +4,23 @@
 module.exports = grammar({
   name: 'Clojure',
 
+  extras: $=> [$._whitespace, $.comment],
+
   rules: {
     source_file: $=> repeat($.sExpression),
 
-    sExpression: $=> seq('(', field('op', $.identifier), repeat($.expression), ')'),
-    expression: $=> choice($.sExpression, $._collection, $.identifier, $._literal),
+    sExpression: $=> seq('(', field('op', $.identifier), repeat($._expression), ')'),
+    _expression: $=> choice($.sExpression, $._collection, $.identifier, $._literal),
 
     _collection: $=> choice($.vector),
-    vector: $=> seq('[', repeat($.expression), ']'),
+    vector: $=> seq('[', repeat($._expression), ']'),
 
     identifier: $=> /[:\-]?[a-zA-Z_][a-zA-Z0-9_?\-]*/,
 
     _literal: $=> choice($.stringLiteral),
-    stringLiteral: $=> /"[^\r\n]*?"/
+    stringLiteral: $=> /"[^\r\n]*?"/,
 
+    _whitespace: $=> /\s+/,
+    comment: $=> /;.*?\r?\n/
   }
 });
