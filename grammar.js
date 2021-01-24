@@ -1,6 +1,3 @@
-// let grammar, seq, choice, repeat, repeat1, optional, alias, field
-//   prec = { left: 1, right: 1, dynamic: 1 }, token = {immediate: 1};
-
 module.exports = grammar({
   name: 'Clojure',
 
@@ -19,13 +16,36 @@ module.exports = grammar({
     source_file: $=> repeat($.sExpression),
 
     // -- Expressions --- //
-    sExpression: $=> seq('(', field('op', $._identifier), field('operands', repeat($._expression)), ')'),
-    _expression: $=> choice($.sExpression, $._collection, $._identifier, $._literal),
+    sExpression: $=> seq(
+      '(', field('op', $._identifier), field('operands', repeat($._expression)), ')'
+    ),
+    anonymousFunctionExpression: $=> seq('#', field('body', $.sExpression)),
+    unaryOp: $=> /('|~|`|~@)/,
+    unaryExpression: $=> seq(
+      field('op', $.unaryOp),
+      field('expr', choice(
+        $.sExpression, $.anonymousFunctionExpression, $._collection, $._identifier, $._literal
+      ))
+    ),
+    _expression: $=> choice(
+      $.unaryExpression, 
+      $.sExpression, 
+      $.anonymousFunctionExpression,
+      $._collection, 
+      $._identifier, 
+      $._literal
+    ),
 
     // -- Collections --- //
     _collection: $=> choice($.list, $.vector, $.set, $.map),
     list: $=> seq('\'(', repeat($._expression), ')'),
-    vector: $=> seq('[', repeat($._expression), ']'),
+    vector: $=> seq(
+      '[', 
+      repeat($._expression), 
+      optional(seq('&', choice($._identifier, $._collection))), 
+      optional(seq(':as', $._symbol)), 
+      ']'
+    ),
     set: $=> seq('#{', repeat($._expression), '}'),
     map: $=> seq('{', repeat($.mapEntry), '}'),
 
@@ -47,9 +67,9 @@ module.exports = grammar({
     ratio: $=> /\d+\/\d+/,
 
     _characterLiteral: $=> choice($.string, $.character, $.regex),
-    string: $=> /"[^\r\n]*?"/,
+    string: $=> /"[^\r\n"]*?"/,
     character: $=> /\\[^\s]|\\u\d{4}|\\o\d{3}|\\newline|\\return|\\space|\\tab/,
-    regex: $=> /#"[^\r\n]*?"/,
+    regex: $=> /#"[^\r\n"]*?"/,
 
     // --- Extras --- //
     _whitespace: $=> /[\s,]+/,
