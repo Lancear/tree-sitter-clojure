@@ -1,0 +1,16 @@
+name: "Build Parser"
+on: push
+jobs:
+  buildParser:
+    name: "Build Parser Job"
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Install node modules"
+        run: npm ci
+
+      - name: "Generate and run the parser"
+        run: npm start
