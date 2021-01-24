@@ -3,7 +3,7 @@
 # tree-sitter-clojure
 #### Clojure grammar for tree-sitter
 
-Currently supported:
+### Currently supported:
 - literals (numerical, characters, strings, regexes)
 - collections (lists, vectors, sets, maps)
 - comments and optional ,
@@ -12,3 +12,10 @@ Currently supported:
 - macros (incl. (syntax) quoting and unquoting (splice) operators)
 - anonymous functions
 - destructuring (kinda)
+
+### Todo:
+- add testcases
+- add more semanctic rules for the S-expressions (e.g. let, if, def, ...)
+- solve destructuring better
+- verify all special symbols, and literals are included
+- if possible, limit radix digits to their base
