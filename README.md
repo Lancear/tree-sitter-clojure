@@ -1,4 +1,4 @@
-![build status](https://github.com/dark-magic/tree-sitter-clojure/workflows/Build%20Parser/badge.svg)
+> **Attention:** You probably meant to go to [sogaiu/tree-sitter-clojure](https://github.com/sogaiu/tree-sitter-clojure), the Clojure parser listed in the tree-sitter docs as this repo is incomplete and abandoned.
 
 # tree-sitter-clojure
 #### Clojure grammar for tree-sitter
